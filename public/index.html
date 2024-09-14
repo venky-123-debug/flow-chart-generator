@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Svelte app</title>
+  <link rel="icon" type="image/png" href="assets/docChainLogo.svg" />
+  <style>
+    /* width */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 2px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #818286;
+      border-radius: 8px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #707175;
+    }
+
+    /* @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap"); */
+
+    @font-face {
+      font-family: "Nunito";
+      font-style: normal;
+      /* font-weight: 800; */
+      /* src: url(assets/font/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2) format("woff2"), url(assets/font/nunito.ttf) format("truetype"); */
+      /* src: url(assets/font/nunito.ttf) format("truetype"); */
+      src: url(assets/font/Nunito-Regular.woff) format("woff");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .loader {
+      background: #ff6a00;
+      height: 100vh;
+      align-items: center !important;
+      justify-content: center !important;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    @keyframes spinner-animation {
+      0% {
+        r: 15;
+        fill-opacity: 1;
+      }
+
+      100% {
+        r: 9;
+        fill-opacity: 0.5;
+      }
+    }
+
+    .circle {
+      animation: spinner-animation 0.45s alternate infinite ease-in-out;
+    }
+
+    .circle1 {
+      animation: spinner-animation 0.45s 0.15s alternate infinite ease-in-out;
+    }
+
+    .circle2 {
+      animation: spinner-animation 0.45s 0.3s alternate infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader" id="mainLoader">
+    <div
+      style="display: flex; align-items: center; justify-content: right; height: 100vh; width: 121vh; position: absolute; right: 0; opacity: 0.1">
+      <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 727.6 594.77">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #fff;
+            }
+          </style>
+        </defs>
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g>
+            <path class="cls-1"
+              d="m363.8,250.05l-229.9,109.87,229.9,109.88v124.97L55.03,447.21c-73.38-35.07-73.38-139.52,0-174.59L363.8,125.03v125.02Z" />
+            <path class="cls-1"
+              d="m363.8,125.02l229.9,109.87-229.9,109.88v124.97l308.76-147.56c73.38-35.07,73.38-139.52,0-174.59L363.8,0v125.02Z" />
+          </g>
+        </g>
+      </svg>
+    </div>
+    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700 1070">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: #fff;
+          }
+
+          .cls-2 {
+            fill: #ff6a00;
+          }
+        </style>
+      </defs>
+      <rect class="cls-2" x="-27.86" y="-39.23" width="1755.73" height="1148.45" />
+      <g>
+        <g>
+          <path class="cls-1"
+            d="m467.33,523.41l-56.31,26.91,56.31,26.91v30.61l-75.63-36.14c-17.97-8.59-17.97-34.17,0-42.76l75.63-36.15v30.62Z" />
+          <path class="cls-1"
+            d="m467.33,492.78l56.31,26.91-56.31,26.91v30.61l75.63-36.14c17.97-8.59,17.97-34.17,0-42.76l-75.63-36.15v30.62Z" />
+        </g>
+        <path class="cls-1"
+          d="m626.43,488.82c14.82,0,26.79,4.23,35.93,12.7,9.13,8.47,13.7,19.67,13.7,33.61s-4.56,25.1-13.7,33.48c-9.13,8.38-21.11,12.57-35.93,12.57h-31.36v-92.36h31.36Zm-12.7,78.2h12.7c9.7,0,17.24-2.87,22.63-8.6,5.38-5.73,8.07-13.5,8.07-23.29s-2.69-17.55-8.07-23.29c-5.38-5.73-12.92-8.6-22.63-8.6h-12.7v63.78Z" />
+        <path class="cls-1"
+          d="m692.46,571.79c-7.15-6.97-10.72-16.1-10.72-27.39s3.62-20.38,10.85-27.26c7.23-6.88,16.21-10.32,26.93-10.32s19.69,3.44,26.93,10.32c7.23,6.88,10.85,15.97,10.85,27.26s-3.64,20.42-10.92,27.39c-7.28,6.97-16.3,10.45-27.06,10.45s-19.72-3.48-26.86-10.45Zm26.86-5.29c5.2,0,9.68-1.92,13.43-5.76,3.75-3.84,5.62-9.26,5.62-16.28s-1.85-12.42-5.56-16.21c-3.71-3.79-8.18-5.69-13.43-5.69s-9.68,1.9-13.3,5.69c-3.62,3.79-5.43,9.22-5.43,16.28s1.81,12.48,5.43,16.28c3.62,3.79,8.03,5.69,13.23,5.69Z" />
+        <path class="cls-1"
+          d="m773.04,571.92c-6.71-6.88-10.06-16.01-10.06-27.39s3.35-20.51,10.06-27.39c6.7-6.88,15.39-10.32,26.07-10.32,8.91,0,16.36,2.16,22.36,6.48,6,4.32,10.01,10.45,12.04,18.39h-20.11c-2.38-6.09-7.15-9.13-14.29-9.13-5.38,0-9.59,1.96-12.64,5.89-3.04,3.93-4.56,9.29-4.56,16.08s1.52,12.15,4.56,16.08c3.04,3.93,7.25,5.89,12.64,5.89,7.06,0,11.82-3.09,14.29-9.26h20.11c-2.12,7.68-6.2,13.76-12.24,18.26-6.04,4.5-13.43,6.75-22.16,6.75-10.67,0-19.36-3.44-26.07-10.32Z" />
+        <g>
+          <path class="cls-1"
+            d="m903.69,500.82c5.26,2.89,9.38,7.05,12.25,12.36h9.83c-3.63-7.5-8.93-13.32-15.77-17.31-7.14-4.16-15.42-6.26-24.61-6.26-12.82,0-23.77,4.37-32.56,12.98-8.78,8.61-13.23,19.69-13.23,32.94s4.45,24.31,13.23,32.88c8.78,8.57,19.74,12.91,32.56,12.91,9.19,0,17.47-2.11,24.61-6.26,6.85-3.98,12.15-9.8,15.77-17.31h-9.83c-2.87,5.31-6.98,9.48-12.25,12.42-5.36,3-11.53,4.52-18.31,4.52-10.81,0-19.87-3.63-26.93-10.78-7.06-7.15-10.64-16.7-10.64-28.38s3.58-21.23,10.64-28.38c7.06-7.15,16.12-10.78,26.93-10.78,6.78,0,12.94,1.5,18.31,4.45Z" />
+          <path class="cls-1"
+            d="m976.02,508.26c-10.81,0-18.68,4.29-23.38,12.76l-1.22,2.2v-39.32h-7.96v96.61h7.96v-40.63c0-8.07,1.99-14.32,5.93-18.57,3.95-4.27,9.41-6.43,16.23-6.43s12.28,2.16,16.23,6.43c3.94,4.25,5.93,10.5,5.93,18.57v40.63h7.82v-42.35c0-9.65-2.65-17.13-7.87-22.23-5.23-5.1-11.85-7.69-19.66-7.69Z" />
+          <path class="cls-1"
+            d="m1066.57,512.92c-4.81-3.09-10.48-4.66-16.85-4.66-9.92,0-18.19,3.34-24.61,9.93-6.42,6.59-9.67,15.43-9.67,26.27s3.28,19.89,9.75,26.88c6.46,6.97,14.71,10.51,24.53,10.51,6.37,0,12.04-1.59,16.85-4.72,4.81-3.14,8.43-7.21,10.75-12.11l1.24-2.63v18.13h7.96v-70.94h-7.96v18l-1.24-2.63c-2.32-4.89-5.93-8.94-10.74-12.04Zm11.99,32.13c0,8.96-2.71,16.3-8.06,21.82-5.35,5.53-11.88,8.34-19.39,8.34s-14.05-2.9-19.4-8.61c-5.34-5.7-8.05-13.15-8.05-22.15s2.69-16.26,8-21.57c5.31-5.31,11.83-8,19.38-8s14.1,2.8,19.46,8.34c5.35,5.53,8.06,12.87,8.06,21.82Z" />
+          <rect class="cls-1" x="1103.7" y="509.59" width="7.96" height="70.94" />
+          <path class="cls-1"
+            d="m1107.88,482.33c-1.73,0-3.16.59-4.37,1.79-1.21,1.21-1.79,2.64-1.79,4.37s.59,3.16,1.79,4.37c1.21,1.21,2.64,1.79,4.37,1.79s3.13-.58,4.29-1.79c1.17-1.21,1.73-2.64,1.73-4.38s-.57-3.17-1.74-4.38c-1.16-1.2-2.57-1.78-4.29-1.78Z" />
+          <path class="cls-1"
+            d="m1161.4,508.26c-10.81,0-18.68,4.29-23.38,12.76l-1.22,2.2v-13.65h-7.96v70.94h7.96v-40.63c0-8.07,1.99-14.32,5.93-18.57,3.95-4.27,9.41-6.43,16.23-6.43s12.28,2.16,16.23,6.43c3.94,4.25,5.93,10.5,5.93,18.57v40.63h7.82v-42.35c0-9.65-2.65-17.13-7.87-22.23-5.23-5.1-11.85-7.69-19.66-7.69Z" />
+          <path class="cls-1"
+            d="m1209.3,568.87c-1.6,0-2.94.57-4.1,1.73-1.16,1.16-1.73,2.5-1.73,4.1s.57,2.94,1.73,4.1c1.16,1.16,2.5,1.73,4.1,1.73s2.94-.57,4.1-1.73,1.73-2.5,1.73-4.1-.57-2.94-1.73-4.1c-1.16-1.16-2.51-1.73-4.1-1.73Z" />
+          <path class="cls-1"
+            d="m1234.51,482.33c-1.73,0-3.16.59-4.37,1.79-1.21,1.21-1.79,2.64-1.79,4.37s.59,3.16,1.79,4.37c1.21,1.21,2.64,1.79,4.37,1.79s3.13-.58,4.29-1.79c1.17-1.21,1.73-2.64,1.73-4.38s-.57-3.17-1.74-4.38c-1.16-1.2-2.57-1.78-4.29-1.78Z" />
+          <rect class="cls-1" x="1230.33" y="509.59" width="7.96" height="70.94" />
+          <path class="cls-1"
+            d="m1311.65,518.46c-6.72-6.76-15.25-10.19-25.34-10.19s-18.62,3.43-25.34,10.19c-6.72,6.77-10.13,15.74-10.13,26.67s3.21,19.89,9.55,26.61c6.33,6.71,14.67,10.12,24.8,10.12s18.87-3.46,25.94-10.27c7.07-6.81,10.65-15.75,10.65-26.59s-3.41-19.77-10.13-26.53Zm-6.62,49.03c-5.57,5.48-12.27,8.26-19.91,8.26s-14.01-2.74-18.88-8.16c-4.85-5.39-7.31-12.97-7.31-22.54s2.6-17.15,7.72-22.55c5.13-5.4,11.62-8.14,19.26-8.14s14.21,2.76,19.52,8.2c5.3,5.44,7.99,12.98,7.99,22.42s-2.83,17.02-8.4,22.5Z" />
+        </g>
+      </g>
+    </svg>
+    <div
+      style="position: absolute; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 12px; bottom: 10vh; font-size: 0.875rem; color: white; display: flex"
+      class="loadingText">
+      <span>Loading application, Please Wait</span>
+
+      <svg width="20" height="7" stroke="white" fill="white" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg">
+        <circle class="circle" cx="15" cy="15" r="15" />
+        <circle class="circle1" cx="60" cy="15" r="9" fill-opacity="0.9" />
+        <circle class="circle2" cx="105" cy="15" r="15" />
+      </svg>
+    </div>
+  </div>
+  <div id="mainContent" style="display: none"></div>
+  <!-- <link rel="stylesheet" href="assets/fontawesome.min.css" />
+    <link rel="stylesheet" href="assets/solid.min.css" /> -->
+
+  <link rel="stylesheet" type="text/css" href="assets/flags.css">
+  <link rel="stylesheet" href="https://kit.fontawesome.com/26b3d632d0.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="build/bundle.css" />
+  <script defer src="build/bundle.js"></script>
+  <!-- <script src="assets/particles.min.js"></script> -->
+</body>
+
+</html>

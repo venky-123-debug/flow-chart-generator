@@ -1,4 +1,10 @@
 module.exports = {
   semi: false,
-  printWidth: 200,
+  htmlWhitespaceSensitivity: "ignore",
+  printWidth: 800,
+  plugins: [
+    "prettier-plugin-svelte",
+    "prettier-plugin-tailwindcss", // MUST come last
+  ],
+  pluginSearchDirs: false,
 }
