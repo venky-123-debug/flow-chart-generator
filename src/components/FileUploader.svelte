@@ -1,57 +1,110 @@
 <script>
   import { onMount } from 'svelte';
   import * as go from 'gojs';
-  import * as YAML from 'js-yaml';
-  import Papa from 'papaparse';
-  import { parseString } from 'xml2js';
 
   let myDiagram;
-  let inputFile;
   let textInput = '';
+  let fileInput;
 
-  const parseData = async (text, format) => {
+  // Function to parse data based on format
+  const parseData = (text, format) => {
     let data = { nodes: [], links: [] };
 
     try {
-      if (format === 'json') {
-        data = JSON.parse(text);
-      } else if (format === 'yaml') {
-        data = YAML.load(text);
-      } else if (format === 'csv') {
-        const parsed = Papa.parse(text, { header: true });
-        data = {
-          nodes: parsed.data.map(row => ({ key: row.Node, color: row.Color })),
-          links: parsed.data.map(row => ({ from: row.Node, to: row.Target }))
-        };
-      } else if (format === 'xml') {
-        const parsed = await new Promise((resolve, reject) => {
-          parseString(text, (err, result) => (err ? reject(err) : resolve(result)));
-        });
-        data = {
-          nodes: result.nodes.node.map(node => ({ key: node.$.key, color: node.$.color })),
-          links: result.links.link.map(link => ({ from: link.$.from, to: link.$.to }))
-        };
+      switch (format) {
+        case 'json':
+          data = JSON.parse(text);
+          break;
+        case 'yaml':
+          data = parseYAML(text);
+          break;
+        case 'csv':
+          data = parseCSV(text);
+          break;
+        case 'xml':
+          data = parseXML(text);
+          break;
+        default:
+          console.error('Unsupported format');
+          return;
       }
-
       renderDiagram(data);
     } catch (error) {
       console.error('Error parsing data:', error);
     }
   };
 
+  // Function to render diagram
   const renderDiagram = (data) => {
     if (!myDiagram) return;
 
     myDiagram.model = new go.GraphLinksModel(data.nodes, data.links);
   };
 
+  // Function to handle file upload
   const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+    const input = event.target;
+    const file = input.files ? input.files[0] : null;
+
+    console
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => parseData(e.target.result, file.type.split('/')[1]);
+      reader.onload = (e) => {
+        const format = file.type.split('/')[1];
+        parseData(e.target.result, format);
+      };
       reader.readAsText(file);
     }
+  };
+
+  // Parse CSV data
+  const parseCSV = (text) => {
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+    const nodes = [];
+    const links = [];
+    lines.forEach((line, index) => {
+      if (index === 0) return; // Skip header line
+      const [node, color, target] = line.split(',');
+      if (node && color) {
+        nodes.push({ key: node, color });
+        if (target) {
+          links.push({ from: node, to: target });
+        }
+      }
+    });
+    return { nodes, links };
+  };
+
+  // Parse XML data
+  const parseXML = (text) => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(text, 'application/xml');
+    const nodes = Array.from(xmlDoc.getElementsByTagName('node')).map(node => ({
+      key: node.getAttribute('key'),
+      color: node.getAttribute('color')
+    }));
+    const links = Array.from(xmlDoc.getElementsByTagName('link')).map(link => ({
+      from: link.getAttribute('from'),
+      to: link.getAttribute('to')
+    }));
+    return { nodes, links };
+  };
+
+  // Parse YAML data (basic implementation)
+  const parseYAML = (text) => {
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+    const nodes = [];
+    const links = [];
+    lines.forEach(line => {
+      if (line.startsWith('node:')) {
+        const [_, key, color] = line.split(' ');
+        nodes.push({ key, color });
+      } else if (line.startsWith('link:')) {
+        const [_, from, to] = line.split(' ');
+        links.push({ from, to });
+      }
+    });
+    return { nodes, links };
   };
 
   onMount(() => {
@@ -77,16 +130,28 @@
         go.GraphObject.make(go.Shape, { toArrow: 'standard' })
       );
   });
+
+  // Handle input text and file upload
+  const handleInput = (format) => {
+    parseData(textInput, format);
+  };
 </script>
 
-<input type="file" accept=".json,.csv,.xml,.yaml,.yml" on:change="{handleFileUpload}" />
-<textarea bind:value="{textInput}" placeholder="Paste text here..." rows="10" cols="30"></textarea>
-<button on:click={() => parseData(textInput, 'json')}>Parse JSON</button>
-<button on:click={() => parseData(textInput, 'yaml')}>Parse YAML</button>
-<button on:click={() => parseData(textInput, 'csv')}>Parse CSV</button>
-<button on:click={() => parseData(textInput, 'xml')}>Parse XML</button>
-
-<div id="myDiagramDiv" style="width: 100%; height: 600px;"></div>
+<div class="p-4">
+  <div class="mb-4">
+    <input type="file" accept=".json,.csv,.xml,.yaml,.yml" on:change="{handleFileUpload}" class="p-2 border rounded" />
+  </div>
+  <div class="mb-4">
+    <textarea bind:value="{textInput}" placeholder="Paste text here..." rows="10" cols="30" class="w-full p-2 border rounded"></textarea>
+  </div>
+  <div class="flex gap-2 mb-4">
+    <button on:click={() => handleInput('json')} class="px-4 py-2 bg-blue-500 text-white rounded">Parse JSON</button>
+    <button on:click={() => handleInput('yaml')} class="px-4 py-2 bg-green-500 text-white rounded">Parse YAML</button>
+    <button on:click={() => handleInput('csv')} class="px-4 py-2 bg-yellow-500 text-white rounded">Parse CSV</button>
+    <button on:click={() => handleInput('xml')} class="px-4 py-2 bg-red-500 text-white rounded">Parse XML</button>
+  </div>
+  <div id="myDiagramDiv" class="w-full h-[600px] border border-gray-300"></div>
+</div>
 
 <style>
   #myDiagramDiv {
